@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>英打遊戲版本一</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#cfe8ff;--ink:#3b2a3a;--cream:#fffbe8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10171f}}
+:root[data-theme="dark"]{--bg:#10171f}
+*{box-sizing:border-box}
+body{margin:0;height:100%;background:var(--bg);display:flex;align-items:center;justify-content:center;font-family:'Press Start 2P','Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif;color:var(--ink)}
+#w{position:relative;width:min(100vw,calc((100svh - 24px)*16/9),1000px);aspect-ratio:16/9;container-type:inline-size;box-shadow:0 0 0 4px var(--ink),0 8px 0 4px #0006;border-radius:6px;overflow:hidden;background:#a8dcff}
+canvas{width:100%;height:100%;display:block;image-rendering:pixelated}
+h1{position:absolute;left:0;right:0;top:3.6cqw;margin:0;text-align:center;font-size:6.6cqw;font-weight:900;letter-spacing:.3cqw;color:#ffd23f;-webkit-text-stroke:1.1cqw var(--ink);paint-order:stroke fill;text-shadow:0 .9cqw 0 #b8651b,0 1.3cqw 0 var(--ink);animation:bob 1.6s steps(2) infinite}
+.sub{position:absolute;left:50%;top:13.4cqw;transform:translateX(-50%);margin:0;padding:.7cqw 2.4cqw;font-size:1.9cqw;background:#6bcb77;border:.4cqw solid var(--ink);box-shadow:0 .4cqw 0 var(--ink);color:#fff;text-shadow:.25cqw .25cqw 0 var(--ink);white-space:nowrap}
+nav{position:absolute;left:58%;top:21cqw;width:36%;display:flex;flex-direction:column;gap:2.4cqw}
+nav button{font:inherit;font-size:2.6cqw;padding:1.7cqw 2cqw;text-align:left;background:var(--cream);color:var(--ink);border:.5cqw solid var(--ink);box-shadow:0 .7cqw 0 #8a7a6a;cursor:pointer;border-radius:.6cqw;transition:transform .08s steps(2)}
+nav button#go{background:#ffcc4d;box-shadow:0 .7cqw 0 #8a4b14}
+nav button:hover,nav button:focus-visible{transform:translateX(1.4cqw);background:#fff;outline:none;box-shadow:0 .7cqw 0 #e63946}
+nav button#go:hover,nav button#go:focus-visible{background:#ffe58f}
+nav button:active{transform:translate(1.4cqw,.5cqw);box-shadow:0 .2cqw 0 #8a4b14}
+nav b{display:inline-block;width:3.4cqw;font-weight:400;color:#e63946}
+.hint{position:absolute;left:0;right:0;bottom:1.6cqw;text-align:center;font-size:1.5cqw;color:#fff;text-shadow:.25cqw .25cqw 0 var(--ink);margin:0}
+.ver{position:absolute;left:2cqw;bottom:1.6cqw;font-size:1.4cqw;color:#fff;text-shadow:.25cqw .25cqw 0 var(--ink);margin:0}
+.pn{position:absolute;inset:0;background:#1d2b3acc;display:flex;align-items:center;justify-content:center}
+.pn[hidden]{display:none}
+.bx{width:80%;max-height:88%;overflow:auto;background:var(--cream);border:.7cqw solid var(--ink);box-shadow:0 1cqw 0 #0005;border-radius:1cqw;padding:2.4cqw;font-size:1.9cqw;line-height:1.8}
+.bx h2{margin:0 0 1.6cqw;font-size:2.8cqw}
+.bx p{margin:1.4cqw 0}
+.ach{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4cqw}
+.a{display:flex;gap:1.2cqw;align-items:center;border:.4cqw solid var(--ink);padding:1cqw;background:#fff;border-radius:.6cqw}
+.a i{font-style:normal;width:5.2cqw;height:5.2cqw;flex:none;display:grid;place-items:center;font-size:2.8cqw;background:#ffd23f;border:.4cqw solid var(--ink)}
+.a.lk{opacity:.6}.a.lk i{background:#ccc;color:#777}
+.a small{display:block;font-size:1.3cqw;color:#6b5a6b;line-height:1.6}
+.row{display:flex;justify-content:space-between;align-items:center;margin:1.6cqw 0;gap:2cqw}
+.seg{display:flex;gap:1cqw}
+.k{font:inherit;font-size:1.8cqw;padding:.9cqw 1.8cqw;background:#fff;color:var(--ink);border:.4cqw solid var(--ink);box-shadow:0 .4cqw 0 #8a7a6a;cursor:pointer;border-radius:.5cqw}
+.k.on{background:#ffcc4d}
+.k:focus-visible{outline:.4cqw solid #e63946}
+input[type=range]{width:24cqw;accent-color:#e8a33a}
+.wp{position:absolute;inset:0;background:#ffcc4d;display:none;place-items:center;font-size:8cqw;color:var(--ink);-webkit-text-stroke:0}
+.wp.on{display:grid;animation:wp .75s steps(6) forwards}
+#ts{position:absolute;left:50%;bottom:7cqw;transform:translateX(-50%);background:var(--cream);border:.4cqw solid var(--ink);padding:1cqw 2cqw;font-size:1.6cqw;white-space:nowrap}
+#ts[hidden]{display:none}
+@keyframes bob{50%{transform:translateY(-.8cqw)}}
+@keyframes wp{from{clip-path:circle(0)}to{clip-path:circle(75%)}}
+@media (prefers-reduced-motion:reduce){h1{animation:none}.wp.on{animation:none}}
+</style></head><body>
+<div id="w"><canvas id="c" width="320" height="180"></canvas>
+<h1>英打遊戲版本一</h1><p class="sub">森林打字冒險</p>
+<nav aria-label="主選單"><button id="go"><b>▶</b>進入遊戲</button><button id="ac"><b>★</b>成就欣賞</button><button id="st"><b>⚙</b>遊戲設定</button></nav>
+<p class="ver">VER 1.0</p><p class="hint">↑ ↓ 選擇　Enter 確認</p>
+<div class="pn" id="pn" hidden><div class="bx" id="bx"></div></div>
+<div class="wp" id="wp">GO!</div><div id="ts" hidden></div></div>
+<script>
+const $=s=>document.querySelector(s),C=$('#c'),X=C.getContext('2d');X.imageSmoothingEnabled=false;
+const W=320,H=180,G=146,GAME_URL='https://claude.ai/artifact/4ebcTTUonzLoWeNMT6WiTf';
+let set={snd:1,vol:.5,dif:1},got=[],AU,t=0,last=null;
+const sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+try{Object.assign(set,JSON.parse(localStorage.getItem('ftset')||'{}'));got=JSON.parse(localStorage.getItem('ftach')||'[]')}catch(e){}
+if(!Array.isArray(got))got=[];if(!got.includes('hello')){got.push('hello');sv('ftach',got)}
+function snd(f,d=.1,f2){if(!set.snd)return;try{AU=AU||new(window.AudioContext||webkitAudioContext)();const s=AU.currentTime,a=AU.createOscillator(),g=AU.createGain();a.type='square';a.frequency.setValueAtTime(f,s);if(f2)a.frequency.exponentialRampToValueAtTime(f2,s+d);g.gain.setValueAtTime(.08*set.vol+.0001,s);g.gain.exponentialRampToValueAtTime(.001,s+d);a.connect(g).connect(AU.destination);a.start();a.stop(s+d)}catch(e){}}
+/* 原創吉祥物：頭上長著小葉芽的奶油色兔兔 */
+const SPR=document.createElement('canvas');SPR.width=28;SPR.height=33;
+(function(){const g=SPR.getContext('2d'),R=[[5,9,18,14],[3,11,22,10],[6,0,5,12],[17,1,5,11],[7,22,14,6],[6,23,16,4],[6,27,6,3],[16,27,6,3],[3,23,4,4],[21,23,4,4]],LF=[[11,7,3,2],[14,5,3,2],[13,8,1,2]];
+ const f=(c,x,y,w,h)=>{g.fillStyle=c;g.fillRect(x+1,y+1,w,h)};
+ g.fillStyle='#3b2a3a';R.concat(LF).forEach(([x,y,w,h])=>g.fillRect(x,y,w+2,h+2));
+ R.forEach(r=>f('#fffaf0',...r));LF.forEach(r=>f('#6bcb77',...r));
+ f('#f3e2d2',10,25,8,2);f('#ffadc6',7,2,3,8);f('#ffadc6',18,3,3,7);f('#ffadc6',6,18,3,2);f('#ffadc6',19,18,3,2);
+ f('#ffadc6',13,17,2,1);f('#d9546a',13,18,2,2);f('#6bcb77',6,21,16,3);f('#3f9a4e',18,23,3,4);f('#3f9a4e',9,22,2,1)})();
+function hl(s,c,b,a,w,o){X.fillStyle=c;for(let x=0;x<W;x+=2){const h=b+a*Math.sin((x+o*s)/w)+a/2*Math.sin((x+o*s)/(w*.37));X.fillRect(x,G-h,2,h)}}
+function tree(x){for(let j=0;j<3;j++){const w=8+j*8;X.fillStyle='#2f7d4a';X.fillRect(x+12-w/2,G-34+j*10,w,10)}X.fillStyle='#6b4423';X.fillRect(x+10,G-6,4,6)}
+function blk(x,y,c){X.fillStyle='#5b2e0a';X.fillRect(x,y,20,20);X.fillStyle='#ffcc4d';X.fillRect(x+2,y+2,16,16);X.fillStyle='#ffe58f';X.fillRect(x+2,y+2,16,3);X.fillStyle='#e8a33a';X.fillRect(x+2,y+15,16,3);X.fillStyle='#fff';X.fillRect(x+3,y+3,2,2);X.fillRect(x+15,y+3,2,2);X.fillStyle='#5b2e0a';X.font='10px "Press Start 2P",monospace';X.textAlign='center';X.fillText(c,x+10,y+15)}
+function draw(){const o=t*14;
+ ['#7ec8ff','#a8dcff','#d4f1ff'].forEach((c,i)=>{X.fillStyle=c;X.fillRect(0,i*50,W,50)});
+ X.fillStyle='#ffe066';X.beginPath();X.arc(286,64,11,0,7);X.fill();
+ X.fillStyle='#fff';for(let i=0;i<5;i++){const x=((i*83-t*6*(1+i%2))%(W+60)+W+60)%(W+60)-30,y=58+(i*13)%40;X.fillRect(x,y,26,6);X.fillRect(x+5,y-4,14,4)}
+ hl(.25,'#8fd47a',34,12,34,o);hl(.5,'#5fb85a',22,8,22,o);
+ for(let i=0;i<5;i++)tree(((i*80-o)%(W+80)+W+80)%(W+80)-40);
+ X.fillStyle='#8a5a2b';X.fillRect(0,G,W,H-G);X.fillStyle='#a8703a';
+ for(let r=0;r<2;r++)for(let x=-16;x<W+16;x+=16)X.fillRect(x+(r?8:0)-(o%16),G+9+r*10,14,6);
+ X.fillStyle='#58c24e';X.fillRect(0,G,W,6);X.fillStyle='#8be06a';X.fillRect(0,G,W,2);
+ [['A',14,72,0],['S',128,60,2],['F',150,92,4]].forEach(([c,x,y,p])=>blk(x,Math.round(y+Math.sin(t*2+p)*3),c));
+ for(let i=0;i<3;i++){const bx=40+Math.sin(t*.8+i*2.2)*70+i*20,by=88+Math.cos(t*1.1+i*1.7)*18,w=((t*9+i)|0)%2,cs=['#ff9eb5','#ffd23f','#9ad4ff'];X.fillStyle=cs[i];X.fillRect(bx|0,by|0,2,2);X.fillRect((bx|0)+(w?3:2),(by|0)-(w?2:1),2,2);X.fillRect((bx|0)-(w?3:2),(by|0)-(w?2:1),2,2)}
+ const s=3,mx=36,hop=Math.round(Math.abs(Math.sin(t*3))*3),my=G-33*s-hop;
+ X.fillStyle='rgba(0,0,0,.25)';X.fillRect(mx+8,G+1,70-hop*3,4);X.drawImage(SPR,mx,my,28*s,33*s);
+ const bk=(t%3.2)<.14;X.fillStyle='#2b2233';[10,18].forEach(ex=>{if(bk)X.fillRect(mx+ex*s,my+18*s,2*s,s);else{X.fillRect(mx+ex*s,my+16*s,2*s,3*s);X.fillStyle='#fff';X.fillRect(mx+ex*s,my+16*s,s,s);X.fillStyle='#2b2233'}})}
+const AC=[['hello','★','初次見面','來到森林的第一天'],['s1','♣','森林入口','通過第 1 關'],['c10','♪','連擊小達人','連續答對 10 次'],['p5','♥','零失誤','整關沒有字母落地'],['fast','➤','快手','2 秒內打對字母'],['all','♛','森林之王','全部關卡通關']];
+const pn=$('#pn'),bx=$('#bx');let opener=null;
+function render(k){bx.dataset.k=k;
+ if(k==='a')bx.innerHTML='<h2>成就欣賞</h2><div class="ach">'+AC.map(a=>{const u=got.includes(a[0]);return `<div class="a${u?'':' lk'}"><i>${u?a[1]:'?'}</i><div>${u?a[2]:'？？？'}<small>${a[3]}</small></div></div>`}).join('')+`</div><p>已解鎖 ${got.length} / ${AC.length}</p><button class="k" data-x>返回</button>`;
+ else bx.innerHTML=`<h2>遊戲設定</h2><div class="row">音效<div class="seg"><button class="k${set.snd?' on':''}" data-s="snd" data-v="1">開</button><button class="k${set.snd?'':' on'}" data-s="snd" data-v="0">關</button></div></div><div class="row">音量<input type="range" id="vol" min="0" max="1" step=".1" value="${set.vol}" aria-label="音量"></div><div class="row">難度<div class="seg">${['輕鬆','標準','挑戰'].map((n,i)=>`<button class="k${set.dif===i?' on':''}" data-s="dif" data-v="${i}">${n}</button>`).join('')}</div></div><button class="k" data-x>返回</button>`}
+function open(k){opener=document.activeElement;snd(660,.08,990);render(k);pn.hidden=false;bx.querySelector('button').focus()}
+function close(){pn.hidden=true;snd(440,.08);opener&&opener.focus()}
+bx.onclick=e=>{const b=e.target.closest('button');if(!b)return;if('x' in b.dataset)return close();if(b.dataset.s){set[b.dataset.s]=+b.dataset.v;sv('ftset',set);snd(880,.08);render(bx.dataset.k);bx.querySelector(`[data-s="${b.dataset.s}"][data-v="${b.dataset.v}"]`).focus()}};
+bx.oninput=e=>{if(e.target.id==='vol'){set.vol=+e.target.value;sv('ftset',set);snd(880,.06)}};
+function enter(){snd(523,.1,1047);$('#wp').classList.add('on');setTimeout(()=>{const w=window.open(GAME_URL,'_blank');$('#wp').classList.remove('on');if(!w){const ts=$('#ts');ts.hidden=false;ts.textContent='瀏覽器擋住了新視窗，請允許彈出視窗後再按一次';setTimeout(()=>ts.hidden=true,3500)}},760)}
+$('#go').onclick=enter;$('#ac').onclick=()=>open('a');$('#st').onclick=()=>open('s');
+addEventListener('keydown',e=>{if(!pn.hidden){if(e.key==='Escape')close();return}
+ if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();const b=[...document.querySelectorAll('nav button')],i=b.indexOf(document.activeElement);b[(i+(e.key==='ArrowDown'?1:-1)+3)%3].focus();snd(520,.05)}});
+$('#go').focus({preventScroll:true});
+(function loop(ms){t=ms/1000;draw();requestAnimationFrame(loop)})(0);
+</script></body></html>
